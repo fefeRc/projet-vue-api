@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>commits-example</title>
+		<style>
+			#demo {
+				font-family: "Helvetica", Arial, sans-serif;
+			}
+			a {
+				text-decoration: none;
+				color: #f66;
+			}
+			li {
+				line-height: 1.5em;
+				margin-bottom: 20px;
+			}
+			.author,
+			.date {
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="demo">
+			<!-- <pre>{{commits}}</pre> -->
+			<h1>Pokemons Names</h1>
+			
+			<ul>
+				<li v-for="pokemon in pokemons">
+					{{pokemon.name}}
+				</li>
+			</ul>
+		</div>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue@3"></script>
+		<script>
+			const apiURL =
+				"https://pokeapi.co/api/v2/pokemon/";
+			const config = {
+			};
+
+			Vue.createApp({
+				data() {
+					return {
+						pokemons: null,
+					};
+				},
+
+				created: function () {
+					this.fetchDataPromise();
+					// this.fetchDataAsync()
+				},
+
+				watch: {
+					currentBranch: "fetchDataPromise", //fetchDataAsync
+				},
+				methods: {
+					fetchDataPromise: function () {
+						const self = this;
+						axios
+							.get(apiURL, config)
+							.then(function (response) {
+								console.log(response.data);
+								self.pokemons = response.data.results;
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+					},
+					
+					formattedMessage: function (message) {
+						const newline = message.indexOf("\n");
+						return newline > 0 ? message.slice(0, newline) : message;
+					},
+					formattedDate: function (date) {
+						return date.replace(/T|Z/g, " ");
+					},
+				},
+			}).mount("#demo");
+		</script>
+	</body>
+</html>
