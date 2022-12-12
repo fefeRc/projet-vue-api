@@ -29,7 +29,8 @@
 			
 			<ul>
 				<li v-for="pokemon in pokemons">
-					{{pokemon.name}}
+					<strong>{{pokemon.name}}</strong>
+                    <br>Pour plus d'informations sur {{pokemon.name}} <a :href="pokemon.url">Cliquez ici</a>
 				</li>
 			</ul>
 		</div>
